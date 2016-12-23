@@ -5,10 +5,9 @@
 #include <stdlib.h>
 #include "list.h"
 
-typedef struct _Node *PNode;
 typedef struct _Node{
     PElem pElem;
-    PNode pNext;
+    struct _Node *pNext;
 } *PNode, Node;
 
 typedef struct List_{
@@ -17,7 +16,7 @@ typedef struct List_{
     int listSize;
     CLONE_FUNC cloneFunc;
     DESTROY_FUNC destroyFunc;
-}* PList, List;
+} List;
 
 // are those next three needed?
 //typedef void* PElem;
