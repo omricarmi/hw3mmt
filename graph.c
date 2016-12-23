@@ -370,7 +370,8 @@ PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
 
     //iterate over all vertex and if they are neighbor to source add them to neighbor list
     int vertexSize = SetGetSize(pGraph->vertexElements);
-    for (int i = 0; i < vertexSize; ++i) {
+    int i = 0;
+    for (i = 0; i < vertexSize; ++i) {
         //check if they are neighbors
         if(isEdgeExist(pGraph->edgeElements,serialNumber,i) == TRUE){
             //create vertex to add to the list
@@ -408,8 +409,8 @@ Bool GraphFindShortestPath(PGraph pGraph, int source, int* dist, int* prev){
         return FALSE;
     }
 
-
-    for (int i = 0; i < numOfVertices; ++i) {
+    int i = 0;
+    for (i = 0; i < numOfVertices; ++i) {
 
         //init the prev array to -1 and dist infinity
         prev[i] = -1;
