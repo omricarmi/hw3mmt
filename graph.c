@@ -8,7 +8,6 @@
 #include <limits.h>
 #include "set.h"
 #include "graph.h"
-#include "list.h"
 
 typedef struct _Graph {
     PSet vertexElements;
@@ -530,212 +529,212 @@ PSet GraphEdgesStatus(PGraph pGraph){
     return pGraph->edgeElements;
 }
 
-/*****  Test Functions *****/
-
-/*****  Test Helper *****/
-void test_isValidEdgeWeight(){
-    assert(FALSE == isValidEdgeWeight(-1567));
-    assert(FALSE == isValidEdgeWeight(-10));
-    assert(FALSE == isValidEdgeWeight(-3));
-    assert(FALSE == isValidEdgeWeight(-1));
-
-    assert(TRUE == isValidEdgeWeight(0));
-    assert(TRUE == isValidEdgeWeight(3));
-    assert(TRUE == isValidEdgeWeight(10));
-
-    assert(FALSE == isValidEdgeWeight(11));
-    assert(FALSE == isValidEdgeWeight(15));
-    assert(FALSE == isValidEdgeWeight(120));
-    assert(FALSE == isValidEdgeWeight(1345));
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-/*****  Test Vertex*****/
-void test_VertexCreate(){
-
-    assert(NULL != VertexCreate(0));
-    assert(NULL != VertexCreate(1));
-    assert(NULL != VertexCreate(5));
-    assert(NULL != VertexCreate(10));
-    assert(NULL != VertexCreate(1000));
-
-    assert(NULL == VertexCreate(-1));
-    assert(NULL == VertexCreate(-2));
-    assert(NULL == VertexCreate(-5));
-    assert(NULL == VertexCreate(-10));
-    assert(NULL == VertexCreate(-1000));
-
-    PVertex pVertex = VertexCreate(1);
-    assert(1 == pVertex->serialNumber);
-    pVertex = VertexCreate(0);
-    assert(0 == pVertex->serialNumber);
-    pVertex = VertexCreate(10);
-    assert(10 == pVertex->serialNumber);
-    pVertex = VertexCreate(1000);
-    assert(1000 == pVertex->serialNumber);
-    pVertex = VertexCreate(5);
-    assert(5 == pVertex->serialNumber);
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-void test_VertexDestroy(){
-
-    //FIXME not good check decide replacement
+///*****  Test Functions *****/
+//
+///*****  Test Helper *****/
+//void test_isValidEdgeWeight(){
+//    assert(FALSE == isValidEdgeWeight(-1567));
+//    assert(FALSE == isValidEdgeWeight(-10));
+//    assert(FALSE == isValidEdgeWeight(-3));
+//    assert(FALSE == isValidEdgeWeight(-1));
+//
+//    assert(TRUE == isValidEdgeWeight(0));
+//    assert(TRUE == isValidEdgeWeight(3));
+//    assert(TRUE == isValidEdgeWeight(10));
+//
+//    assert(FALSE == isValidEdgeWeight(11));
+//    assert(FALSE == isValidEdgeWeight(15));
+//    assert(FALSE == isValidEdgeWeight(120));
+//    assert(FALSE == isValidEdgeWeight(1345));
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+///*****  Test Vertex*****/
+//void test_VertexCreate(){
+//
+//    assert(NULL != VertexCreate(0));
+//    assert(NULL != VertexCreate(1));
+//    assert(NULL != VertexCreate(5));
+//    assert(NULL != VertexCreate(10));
+//    assert(NULL != VertexCreate(1000));
+//
+//    assert(NULL == VertexCreate(-1));
+//    assert(NULL == VertexCreate(-2));
+//    assert(NULL == VertexCreate(-5));
+//    assert(NULL == VertexCreate(-10));
+//    assert(NULL == VertexCreate(-1000));
+//
 //    PVertex pVertex = VertexCreate(1);
-//    VertexDestroy(pVertex);
-//    assert(NULL == pVertex);
-
-    VertexDestroy(NULL);
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-void test_VertexCompare(){
-
-    PVertex pVertex1a  = VertexCreate(1);
-    PVertex pVertex1b  = VertexCreate(1);
-    PVertex pVertex2a  = VertexCreate(2);
-    PVertex pVertex2b  = VertexCreate(2);
-
-    assert( FALSE == VertexCompare(NULL,NULL));
-    assert( FALSE == VertexCompare(pVertex1a,NULL));
-    assert( FALSE == VertexCompare(NULL,pVertex1a));
-
-    assert( FALSE == VertexCompare(pVertex1a,pVertex2a));
-    assert( FALSE == VertexCompare(pVertex2a,pVertex1a));
-    assert( FALSE == VertexCompare(VertexCreate(10),VertexCreate(105)));
-
-    assert( TRUE == VertexCompare(pVertex1a,pVertex1a));
-    assert( TRUE == VertexCompare(pVertex1a,pVertex1b));
-    assert( TRUE == VertexCompare(pVertex2a,pVertex2a));
-    assert( TRUE == VertexCompare(pVertex2a,pVertex2b));
-    assert( TRUE == VertexCompare(VertexCreate(10),VertexCreate(10)));
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-void test_VertexClone(){
-
-    assert( NULL == VertexClone(NULL));
-
-    PVertex pv1 =VertexCreate(1);
-    PVertex pv2 = VertexClone(pv1);
-    assert( 1 == pv2->serialNumber);
-    assert( pv1 != pv2 );
-
-    pv1 =VertexCreate(-1);
-    pv2 = VertexClone(pv1);
-    assert( pv2 == NULL );
-
-
-    for (int i = 0; i < 100; ++i) {
-        pv1 =VertexCreate(i);
-        pv2 = VertexClone(pv1);
-        assert( i == pv2->serialNumber);
-    }
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-/***** Test Edge *****/
-void test_EdgeCreate(){
-
-    assert(NULL == EdgeCreate(0,0,0));
-    assert(NULL == EdgeCreate(1,3,3));
-    assert(NULL == EdgeCreate(-1,1,2));
-    assert(NULL == EdgeCreate(-2,1,2));
-    assert(NULL == EdgeCreate(-1,1,2));
-    assert(NULL == EdgeCreate(1,-1,2));
-    assert(NULL == EdgeCreate(1,1,-2));
-
-    assert(NULL != EdgeCreate(0,1,2));
-    assert(NULL != EdgeCreate(10,1,2));
-    assert(NULL != EdgeCreate(1,1,2));
-    assert(NULL != EdgeCreate(5,1,2));
-
-    PEdge pEdge = EdgeCreate(3,1,2);
-    assert(1 == pEdge->nodeA->serialNumber);
-    assert(2 == pEdge->nodeB->serialNumber);
-    assert(3 == pEdge->weight);
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-void test_EdgeDestroy(){
-
-    //FIXME not good check decide replacement
-    PEdge pEdge = EdgeCreate(3,1,2);
-    assert( NULL != pEdge );
-    assert( NULL != pEdge->nodeA );
-    assert( NULL != pEdge->nodeB );
-
-    EdgeDestroy(pEdge);
-    assert( NULL == pEdge->nodeA );
-    assert( NULL == pEdge->nodeB );
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-void test_EdgeCompare(){
-
-    assert( FALSE == EdgeCompare(EdgeCreate(1,0,0),EdgeCreate(1,0,0)));
-    assert( FALSE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(1,1,2)));
-    assert( FALSE == EdgeCompare(EdgeCreate(1,0,1),EdgeCreate(1,1,2)));
-    assert( FALSE == EdgeCompare(EdgeCreate(1,0,1),EdgeCreate(1,2,1)));
-    assert( FALSE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(1,2,1)));
-    assert( FALSE == EdgeCompare(EdgeCreate(1,1,0),NULL));
-    assert( FALSE == EdgeCompare(NULL,EdgeCreate(1,2,1)));
-    assert( FALSE == EdgeCompare(NULL,NULL));
-
-    assert( TRUE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(1,0,1)));
-    assert( TRUE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(3,0,1)));
-    assert( TRUE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(3,1,0)));
-
-    PEdge pEdge110 = EdgeCreate(1,1,0);
-    assert( TRUE == EdgeCompare(pEdge110,pEdge110));
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-void test_EdgeClone(){
-
-    assert( NULL == EdgeClone(NULL));
-
-    PEdge pEdge = EdgeClone(EdgeCreate(3,1,2));
-    assert(1 == pEdge->nodeA->serialNumber);
-    assert(2 == pEdge->nodeB->serialNumber);
-    assert(3 == pEdge->weight);
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-/***** Test Graph Helper *****/
-
-void test_isVertexExist(){
-
-    PSet vertexList = GraphCreate()->vertexElements;
-    for (int i = 0; i < 100; ++i) {
-        SetAdd(vertexList,VertexCreate(i));
-    }
-    for (int i = 0; i < 100; ++i) {
-        assert( TRUE == isVertexExist(vertexList,i));
-    }
-    for (int i = 100; i < 200; ++i) {
-        assert( FALSE == isVertexExist(vertexList,i));
-    }
-    for (int i = -100; i < -1; ++i) {
-        assert( FALSE == isVertexExist(vertexList,i));
-    }
-
-    for (int i = 0; i < 100; i=+4) {
-        SetRemoveElement(vertexList,VertexCreate(i));
-    }
-
-
-    printf("%s : OK\n",__FUNCTION__);
-}
-
-
+//    assert(1 == pVertex->serialNumber);
+//    pVertex = VertexCreate(0);
+//    assert(0 == pVertex->serialNumber);
+//    pVertex = VertexCreate(10);
+//    assert(10 == pVertex->serialNumber);
+//    pVertex = VertexCreate(1000);
+//    assert(1000 == pVertex->serialNumber);
+//    pVertex = VertexCreate(5);
+//    assert(5 == pVertex->serialNumber);
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+//void test_VertexDestroy(){
+//
+//    //FIXME not good check decide replacement
+////    PVertex pVertex = VertexCreate(1);
+////    VertexDestroy(pVertex);
+////    assert(NULL == pVertex);
+//
+//    VertexDestroy(NULL);
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+//void test_VertexCompare(){
+//
+//    PVertex pVertex1a  = VertexCreate(1);
+//    PVertex pVertex1b  = VertexCreate(1);
+//    PVertex pVertex2a  = VertexCreate(2);
+//    PVertex pVertex2b  = VertexCreate(2);
+//
+//    assert( FALSE == VertexCompare(NULL,NULL));
+//    assert( FALSE == VertexCompare(pVertex1a,NULL));
+//    assert( FALSE == VertexCompare(NULL,pVertex1a));
+//
+//    assert( FALSE == VertexCompare(pVertex1a,pVertex2a));
+//    assert( FALSE == VertexCompare(pVertex2a,pVertex1a));
+//    assert( FALSE == VertexCompare(VertexCreate(10),VertexCreate(105)));
+//
+//    assert( TRUE == VertexCompare(pVertex1a,pVertex1a));
+//    assert( TRUE == VertexCompare(pVertex1a,pVertex1b));
+//    assert( TRUE == VertexCompare(pVertex2a,pVertex2a));
+//    assert( TRUE == VertexCompare(pVertex2a,pVertex2b));
+//    assert( TRUE == VertexCompare(VertexCreate(10),VertexCreate(10)));
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+//void test_VertexClone(){
+//
+//    assert( NULL == VertexClone(NULL));
+//
+//    PVertex pv1 =VertexCreate(1);
+//    PVertex pv2 = VertexClone(pv1);
+//    assert( 1 == pv2->serialNumber);
+//    assert( pv1 != pv2 );
+//
+//    pv1 =VertexCreate(-1);
+//    pv2 = VertexClone(pv1);
+//    assert( pv2 == NULL );
+//
+//
+//    for (int i = 0; i < 100; ++i) {
+//        pv1 =VertexCreate(i);
+//        pv2 = VertexClone(pv1);
+//        assert( i == pv2->serialNumber);
+//    }
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+///***** Test Edge *****/
+//void test_EdgeCreate(){
+//
+//    assert(NULL == EdgeCreate(0,0,0));
+//    assert(NULL == EdgeCreate(1,3,3));
+//    assert(NULL == EdgeCreate(-1,1,2));
+//    assert(NULL == EdgeCreate(-2,1,2));
+//    assert(NULL == EdgeCreate(-1,1,2));
+//    assert(NULL == EdgeCreate(1,-1,2));
+//    assert(NULL == EdgeCreate(1,1,-2));
+//
+//    assert(NULL != EdgeCreate(0,1,2));
+//    assert(NULL != EdgeCreate(10,1,2));
+//    assert(NULL != EdgeCreate(1,1,2));
+//    assert(NULL != EdgeCreate(5,1,2));
+//
+//    PEdge pEdge = EdgeCreate(3,1,2);
+//    assert(1 == pEdge->nodeA->serialNumber);
+//    assert(2 == pEdge->nodeB->serialNumber);
+//    assert(3 == pEdge->weight);
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+//void test_EdgeDestroy(){
+//
+//    //FIXME not good check decide replacement
+//    PEdge pEdge = EdgeCreate(3,1,2);
+//    assert( NULL != pEdge );
+//    assert( NULL != pEdge->nodeA );
+//    assert( NULL != pEdge->nodeB );
+//
+//    EdgeDestroy(pEdge);
+//    assert( NULL == pEdge->nodeA );
+//    assert( NULL == pEdge->nodeB );
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+//void test_EdgeCompare(){
+//
+//    assert( FALSE == EdgeCompare(EdgeCreate(1,0,0),EdgeCreate(1,0,0)));
+//    assert( FALSE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(1,1,2)));
+//    assert( FALSE == EdgeCompare(EdgeCreate(1,0,1),EdgeCreate(1,1,2)));
+//    assert( FALSE == EdgeCompare(EdgeCreate(1,0,1),EdgeCreate(1,2,1)));
+//    assert( FALSE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(1,2,1)));
+//    assert( FALSE == EdgeCompare(EdgeCreate(1,1,0),NULL));
+//    assert( FALSE == EdgeCompare(NULL,EdgeCreate(1,2,1)));
+//    assert( FALSE == EdgeCompare(NULL,NULL));
+//
+//    assert( TRUE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(1,0,1)));
+//    assert( TRUE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(3,0,1)));
+//    assert( TRUE == EdgeCompare(EdgeCreate(1,1,0),EdgeCreate(3,1,0)));
+//
+//    PEdge pEdge110 = EdgeCreate(1,1,0);
+//    assert( TRUE == EdgeCompare(pEdge110,pEdge110));
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+//void test_EdgeClone(){
+//
+//    assert( NULL == EdgeClone(NULL));
+//
+//    PEdge pEdge = EdgeClone(EdgeCreate(3,1,2));
+//    assert(1 == pEdge->nodeA->serialNumber);
+//    assert(2 == pEdge->nodeB->serialNumber);
+//    assert(3 == pEdge->weight);
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+///***** Test Graph Helper *****/
+//
+//void test_isVertexExist(){
+//
+//    PSet vertexList = GraphCreate()->vertexElements;
+//    for (int i = 0; i < 100; ++i) {
+//        SetAdd(vertexList,VertexCreate(i));
+//    }
+//    for (int i = 0; i < 100; ++i) {
+//        assert( TRUE == isVertexExist(vertexList,i));
+//    }
+//    for (int i = 100; i < 200; ++i) {
+//        assert( FALSE == isVertexExist(vertexList,i));
+//    }
+//    for (int i = -100; i < -1; ++i) {
+//        assert( FALSE == isVertexExist(vertexList,i));
+//    }
+//
+//    for (int i = 0; i < 100; i=+4) {
+//        SetRemoveElement(vertexList,VertexCreate(i));
+//    }
+//
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
+//
+//
 
 
 

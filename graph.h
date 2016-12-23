@@ -40,17 +40,17 @@ PSet GraphVerticesStatus(PGraph);
 PSet GraphEdgesStatus(PGraph);
 
 /***** DEBUG *****/
-void test_isValidEdgeWeight();
-void test_isVertexExist();
-
-void test_VertexCreate();
-void test_VertexDestroy();
-void test_VertexCompare();
-void test_VertexClone();
-
-void test_EdgeCreate();
-void test_EdgeDestroy();
-void test_EdgeCompare();
-void test_EdgeClone();
+//void test_isValidEdgeWeight();
+//void test_isVertexExist();
+//
+//void test_VertexCreate();
+//void test_VertexDestroy();
+//void test_VertexCompare();
+//void test_VertexClone();
+//
+//void test_EdgeCreate();
+//void test_EdgeDestroy();
+//void test_EdgeCompare();
+//void test_EdgeClone();
 
 #endif /* GRAPH_H_ */

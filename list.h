@@ -24,13 +24,13 @@ PElem ListGetNext(PList);
 Result ListRemove(PList);
 int ListGetSize(PList);
 
-/* TESTS DECLARATIONS */
-void listCreateTest();
-typedef struct _TstElement *PTstElement,TstElement;
-PTstElement createTstElement(int size);
-void destroyFunc(PTstElement pTstElement);
-PTstElement cloneFunc(PTstElement pTstElement);
+///* TESTS DECLARATIONS */
+//void listCreateTest();
+//typedef struct _TstElement *PTstElement,TstElement;
+//PTstElement createTstElement(int size);
 //void destroyFunc(PTstElement pTstElement);
-void listAddFirstNextTest();
-void test_ListRemove();
+//PTstElement cloneFunc(PTstElement pTstElement);
+////void destroyFunc(PTstElement pTstElement);
+//void listAddFirstNextTest();
+//void test_ListRemove();
 #endif /* _LIST_T_H_ */

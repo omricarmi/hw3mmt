@@ -1,12 +1,9 @@
 //TODO - some general questions - when am i creating with malloc and when with create
 // Created by harel on 12/15/2016.
 //typedef struct List_* PList;#
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
-#include "set.h"
-#include "graph.h"
 
 typedef struct _Node *PNode;
 typedef struct _Node{
@@ -138,154 +135,154 @@ int ListGetSize(PList pList){
 }
 
 
-//*************** TESTS ZONE ***************//
-
-typedef struct _TstElement {
-    int size;
-}*PTstElement,TstElement;
-
-PTstElement createTstElement(int size){
-    PTstElement pTstElement = (PTstElement)malloc(sizeof(TstElement));
-    if(pTstElement == NULL){
-        return NULL;
-    }
-    pTstElement->size = size;
-    return pTstElement;
-}
-PTstElement cloneFunc(PTstElement pTstElement){
-//void* cloneFunc(PTstElement pTstElement){
-    PTstElement pTstElementNew = (PTstElement)malloc(sizeof(TstElement));
-    if (pTstElementNew == NULL){
-        return NULL;
-    }
-    pTstElementNew->size = pTstElement->size;
-    return pTstElementNew;
-}
-void destroyFunc(PTstElement pTstElement){
-    if(pTstElement == NULL){
-        return;
-    }
-    free(pTstElement);
-    return;
-}
-void listCreateTest(){
-    PList pTstList = ListCreate(cloneFunc,destroyFunc);
-    assert(pTstList->listSize == 0);
-    assert(pTstList->pIterator == NULL);
-    assert(pTstList->cloneFunc != NULL);
-    assert(pTstList->pFirstNode == NULL);
-    printf("create is ok\n");
-    ListDestroy(pTstList);
-    //assert(pTstList == NULL); TODO - how to test destroy
-}
-
-void listAddFirstNextTest(){
-    PList pTstList = ListCreate(cloneFunc,destroyFunc);
-
-    //ListAdd(pTstList,createTstElement(3));
-    assert(SUCCESS == ListAdd(pTstList,createTstElement(5)));
-    assert(SUCCESS == ListAdd(pTstList,createTstElement(4)));
-    assert(SUCCESS == ListAdd(pTstList,createTstElement(3)));
-    assert(SUCCESS == ListAdd(pTstList,createTstElement(2)));
-    PTstElement pTstElementFirst = ListGetFirst(pTstList);
-    assert(2 == pTstElementFirst->size);
-    PTstElement pTstElementNext = ListGetNext(pTstList);
-    assert(3 == pTstElementNext->size);
-    pTstElementNext = ListGetNext(pTstList);
-    assert(4 == pTstElementNext->size);
-    pTstElementNext = ListGetNext(pTstList);
-    assert(5 == pTstElementNext->size);
-    printf("Add First Next ok\n");
-    // tests for get size
-    int cur_size = ListGetSize(pTstList);
-    assert(4 == cur_size);
-    PList pTstList2 = ListCreate(cloneFunc,destroyFunc);
-    cur_size = ListGetSize(pTstList2);
-    assert(0 == cur_size);
-    printf("ListGetSize ok\n");
-
-    // tests for remove, the iterator now is on the 4th and last node
-    ListRemove(pTstList);
-  //  ListRemove(pTstList);
-  //  ListRemove(pTstList);
-    assert(3 == ListGetSize(pTstList));
-    printf("ListRemove ok\n");
-    ListDestroy(pTstList);
-    ListDestroy(pTstList2);
-}
-
-/*****  Vertex Functions *****/
-
-PVertex VertexCreateT(int serialNumber){
-
-    if(serialNumber < 0){
-        return NULL;
-    }
-
-    PVertex pVertex = (PVertex) malloc(sizeof(Vertex));
-    if(pVertex == NULL){
-        return NULL;
-    }
-
-    pVertex->serialNumber = serialNumber;
-    return pVertex;
-}
-
-void VertexDestroyT(PElem pVertex){
-
-    if(pVertex == NULL){
-        return;
-    }
-
-    free(pVertex);
-
-}
-
-Bool VertexComparetForT(PElem pElem1, PElem pElem2){
-
-    PVertex pVertex1 = pElem1;
-    PVertex pVertex2 = pElem2;
-
-    if(pVertex1 == NULL || pVertex2 == NULL){
-        return FALSE;
-    }
-
-    if(pVertex1->serialNumber == pVertex2->serialNumber){
-        return TRUE;
-    }else{
-        return FALSE;
-    }
-}
-
-PElem VertexCloneForT(PElem pElem){
-
-    PVertex pVertex = pElem;
-
-    if(pVertex == NULL){
-        return NULL;
-    }
-
-    PVertex pVertexClone = VertexCreate(pVertex->serialNumber);
-    if(pVertexClone == NULL){
-        return NULL;
-    }
-
-    return pVertexClone;
-}
-
-void test_ListRemove(){
-    PList pList = ListCreate(VertexCloneForT,VertexDestroyT);
-    assert(pList != NULL);
-
-    ListAdd(pList,VertexCreateT(1));
-    assert(NULL != pList->pFirstNode->pElem);
-
-    ListAdd(pList,VertexCreateT(1));
-    assert(NULL != pList->pFirstNode->pNext->pElem);
-
-    ListAdd(pList,VertexCreateT(1));
-    assert(NULL != pList->pFirstNode->pNext->pNext->pElem);
-    assert(NULL == pList->pFirstNode->pNext->pNext->pNext);
-
-    printf("%s : OK\n",__FUNCTION__);
-}
+////*************** TESTS ZONE ***************//
+//
+//typedef struct _TstElement {
+//    int size;
+//}*PTstElement,TstElement;
+//
+//PTstElement createTstElement(int size){
+//    PTstElement pTstElement = (PTstElement)malloc(sizeof(TstElement));
+//    if(pTstElement == NULL){
+//        return NULL;
+//    }
+//    pTstElement->size = size;
+//    return pTstElement;
+//}
+//PTstElement cloneFunc(PTstElement pTstElement){
+////void* cloneFunc(PTstElement pTstElement){
+//    PTstElement pTstElementNew = (PTstElement)malloc(sizeof(TstElement));
+//    if (pTstElementNew == NULL){
+//        return NULL;
+//    }
+//    pTstElementNew->size = pTstElement->size;
+//    return pTstElementNew;
+//}
+//void destroyFunc(PTstElement pTstElement){
+//    if(pTstElement == NULL){
+//        return;
+//    }
+//    free(pTstElement);
+//    return;
+//}
+//void listCreateTest(){
+//    PList pTstList = ListCreate(cloneFunc,destroyFunc);
+//    assert(pTstList->listSize == 0);
+//    assert(pTstList->pIterator == NULL);
+//    assert(pTstList->cloneFunc != NULL);
+//    assert(pTstList->pFirstNode == NULL);
+//    printf("create is ok\n");
+//    ListDestroy(pTstList);
+//    //assert(pTstList == NULL); TODO - how to test destroy
+//}
+//
+//void listAddFirstNextTest(){
+//    PList pTstList = ListCreate(cloneFunc,destroyFunc);
+//
+//    //ListAdd(pTstList,createTstElement(3));
+//    assert(SUCCESS == ListAdd(pTstList,createTstElement(5)));
+//    assert(SUCCESS == ListAdd(pTstList,createTstElement(4)));
+//    assert(SUCCESS == ListAdd(pTstList,createTstElement(3)));
+//    assert(SUCCESS == ListAdd(pTstList,createTstElement(2)));
+//    PTstElement pTstElementFirst = ListGetFirst(pTstList);
+//    assert(2 == pTstElementFirst->size);
+//    PTstElement pTstElementNext = ListGetNext(pTstList);
+//    assert(3 == pTstElementNext->size);
+//    pTstElementNext = ListGetNext(pTstList);
+//    assert(4 == pTstElementNext->size);
+//    pTstElementNext = ListGetNext(pTstList);
+//    assert(5 == pTstElementNext->size);
+//    printf("Add First Next ok\n");
+//    // tests for get size
+//    int cur_size = ListGetSize(pTstList);
+//    assert(4 == cur_size);
+//    PList pTstList2 = ListCreate(cloneFunc,destroyFunc);
+//    cur_size = ListGetSize(pTstList2);
+//    assert(0 == cur_size);
+//    printf("ListGetSize ok\n");
+//
+//    // tests for remove, the iterator now is on the 4th and last node
+//    ListRemove(pTstList);
+//  //  ListRemove(pTstList);
+//  //  ListRemove(pTstList);
+//    assert(3 == ListGetSize(pTstList));
+//    printf("ListRemove ok\n");
+//    ListDestroy(pTstList);
+//    ListDestroy(pTstList2);
+//}
+//
+///*****  Vertex Functions *****/
+//
+//PVertex VertexCreateT(int serialNumber){
+//
+//    if(serialNumber < 0){
+//        return NULL;
+//    }
+//
+//    PVertex pVertex = (PVertex) malloc(sizeof(Vertex));
+//    if(pVertex == NULL){
+//        return NULL;
+//    }
+//
+//    pVertex->serialNumber = serialNumber;
+//    return pVertex;
+//}
+//
+//void VertexDestroyT(PElem pVertex){
+//
+//    if(pVertex == NULL){
+//        return;
+//    }
+//
+//    free(pVertex);
+//
+//}
+//
+//Bool VertexComparetForT(PElem pElem1, PElem pElem2){
+//
+//    PVertex pVertex1 = pElem1;
+//    PVertex pVertex2 = pElem2;
+//
+//    if(pVertex1 == NULL || pVertex2 == NULL){
+//        return FALSE;
+//    }
+//
+//    if(pVertex1->serialNumber == pVertex2->serialNumber){
+//        return TRUE;
+//    }else{
+//        return FALSE;
+//    }
+//}
+//
+//PElem VertexCloneForT(PElem pElem){
+//
+//    PVertex pVertex = pElem;
+//
+//    if(pVertex == NULL){
+//        return NULL;
+//    }
+//
+//    PVertex pVertexClone = VertexCreate(pVertex->serialNumber);
+//    if(pVertexClone == NULL){
+//        return NULL;
+//    }
+//
+//    return pVertexClone;
+//}
+//
+//void test_ListRemove(){
+//    PList pList = ListCreate(VertexCloneForT,VertexDestroyT);
+//    assert(pList != NULL);
+//
+//    ListAdd(pList,VertexCreateT(1));
+//    assert(NULL != pList->pFirstNode->pElem);
+//
+//    ListAdd(pList,VertexCreateT(1));
+//    assert(NULL != pList->pFirstNode->pNext->pElem);
+//
+//    ListAdd(pList,VertexCreateT(1));
+//    assert(NULL != pList->pFirstNode->pNext->pNext->pElem);
+//    assert(NULL == pList->pFirstNode->pNext->pNext->pNext);
+//
+//    printf("%s : OK\n",__FUNCTION__);
+//}
