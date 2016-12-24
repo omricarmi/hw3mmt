@@ -376,19 +376,21 @@ PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
         //check if they are neighbors
         if(isEdgeExist(pGraph->edgeElements,serialNumber,i) == TRUE){
             //create vertex to add to the list
-            PVertex pVertex = VertexCreate(i);
-            if(pVertex == NULL){
+            PVertex pVertexTmp = VertexCreate(i);
+            if(pVertexTmp == NULL){
                 SetDestroy(vertexList);
 //                VertexDestroy(pVertexSource);
                 return NULL;
             }
             //add it to the list
-            if( SetAdd(vertexList,pVertex) == FALSE ){
+            if( SetAdd(vertexList,pVertexTmp) == FALSE ){
                 SetDestroy(vertexList);
 //                VertexDestroy(pVertexSource);
-                VertexDestroy(pVertex);
+                VertexDestroy(pVertexTmp);
                 return NULL;
             }
+            //free the tmp vertex after was added to list
+            VertexDestroy(pVertexTmp);
         }
     }
 
