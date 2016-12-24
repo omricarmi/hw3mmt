@@ -361,12 +361,13 @@ PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
         return NULL;
     }
 
-    //init the source vertex
-    PVertex pVertexSource = VertexCreate(serialNumber);
-    if(pVertexSource == NULL){
-        SetDestroy(vertexList);
-        return NULL;
-    }
+    //TODO dont need it at all
+//    //init the source vertex
+//    PVertex pVertexSource = VertexCreate(serialNumber);
+//    if(pVertexSource == NULL){
+//        SetDestroy(vertexList);
+//        return NULL;
+//    }
 
     //iterate over all vertex and if they are neighbor to source add them to neighbor list
     int vertexSize = SetGetSize(pGraph->vertexElements);
@@ -378,13 +379,13 @@ PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
             PVertex pVertex = VertexCreate(i);
             if(pVertex == NULL){
                 SetDestroy(vertexList);
-                VertexDestroy(pVertexSource);
+//                VertexDestroy(pVertexSource);
                 return NULL;
             }
             //add it to the list
             if( SetAdd(vertexList,pVertex) == FALSE ){
                 SetDestroy(vertexList);
-                VertexDestroy(pVertexSource);
+//                VertexDestroy(pVertexSource);
                 VertexDestroy(pVertex);
                 return NULL;
             }
