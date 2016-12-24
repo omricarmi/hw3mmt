@@ -447,6 +447,7 @@ Bool GraphFindShortestPath(PGraph pGraph, int source, int* dist, int* prev){
         //extract min from Q
         PVertex u = ExtractMinVertex(Q,dist);
         if(u == NULL){
+            SetDestroy(Q);
             return FALSE;
         }
 
@@ -499,6 +500,7 @@ Bool GraphFindShortestPath(PGraph pGraph, int source, int* dist, int* prev){
     }
 
     //got here if algo finished successful
+    SetDestroy(Q);
     return TRUE;
 }
 
