@@ -343,6 +343,7 @@ Bool GraphAddEdge(PGraph pGraph, int vertex1, int vertex2, int weight){
     }
 
     //got here if add was success
+    EdgeDestroy(pEdge);
     return TRUE;
 }
 
