@@ -247,11 +247,16 @@ int GraphGetEdgeWeight(PGraph pGraph, int vertex1, int vertex2){
     if( pGraph == NULL){
         return -1;
     }
-    PEdge pEdge = SetFindElement(pGraph->edgeElements,EdgeCreate(0, vertex1, vertex2)); // 0 is arbitrary
+    PEdge pEdgeTmp = EdgeCreate(0, vertex1, vertex2);
+    PEdge pEdge = SetFindElement(pGraph->edgeElements,pEdgeTmp); // 0 is arbitrary
     if(pEdge == NULL){
+        EdgeDestroy(pEdgeTmp);
         return -1;
     }else{
-        return pEdge->weight;
+        int weight = pEdge->weight;
+        EdgeDestroy(pEdgeTmp);
+        EdgeDestroy(pEdge);
+        return weight;
     }
 }
 
