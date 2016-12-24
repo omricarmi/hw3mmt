@@ -295,14 +295,17 @@ Bool GraphAddVertex(PGraph pGraph, int serialNumber){
     }
 
     //create new Vertex
-    PVertex pVertex = VertexCreate(serialNumber);
-    if(pVertex == NULL){
+    PVertex pVertexTmp = VertexCreate(serialNumber);
+    if(pVertexTmp == NULL){
         return FALSE;
     }
     //add it to the vertex set
-    if(SetAdd(pGraph->vertexElements,pVertex) == FALSE){
+    if(SetAdd(pGraph->vertexElements,pVertexTmp) == FALSE){
         return FALSE;
     }
+
+    //free the tmp vertex after was added
+    VertexDestroy(pVertexTmp);
 
     //got here if vertex added
     return TRUE;
