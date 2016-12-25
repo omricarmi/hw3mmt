@@ -253,10 +253,8 @@ int GraphGetEdgeWeight(PGraph pGraph, int vertex1, int vertex2){
         EdgeDestroy(pEdgeTmp);
         return -1;
     }else{
-        int weight = pEdge->weight;
         EdgeDestroy(pEdgeTmp);
-        EdgeDestroy(pEdge);
-        return weight;
+        return pEdge->weight;
     }
 }
 
