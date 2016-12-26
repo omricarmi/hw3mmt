@@ -19,6 +19,7 @@ void VertexDestroy(PElem pVertex);
 PElem VertexClone(PElem pElem);
 
 /*****  Helper Functions *****/
+//validate weight is legal
 Bool isValidEdgeWeight(int weight){
     if(0 <= weight && weight <= 10){
         return TRUE;
@@ -27,6 +28,12 @@ Bool isValidEdgeWeight(int weight){
     }
 }
 
+/**
+ * Pull out vertex with min distance from set of vertices
+ * @param vertices - Set of vertice to check
+ * @param dist - array of distance for the above Set
+ * @return the vertex with min distance
+ */
 PVertex ExtractMinVertex(PSet vertices, int *dist){
     if(vertices == NULL || dist == NULL){
         return NULL;
@@ -52,6 +59,7 @@ PVertex ExtractMinVertex(PSet vertices, int *dist){
     if(pVertexMinClone == NULL){
         return NULL;
     }
+    //remove the min vertex from set
     if( SetRemoveElement(vertices,pVertexMin) == FALSE){
         VertexDestroy(pVertexMinClone);
         return NULL;
@@ -61,6 +69,11 @@ PVertex ExtractMinVertex(PSet vertices, int *dist){
 
 /*****  Vertex Functions *****/
 
+/**
+ * create a vertex
+ * @param serialNumber - the desire serail num for the vertex
+ * @return pointer to the created vertex
+ */
 PVertex VertexCreate(int serialNumber){
 
     if(serialNumber < 0){
@@ -76,6 +89,10 @@ PVertex VertexCreate(int serialNumber){
     return pVertex;
 }
 
+/**
+ * destroy girven vertex
+ * @param pVertex - pointer to vertex to destroy
+ */
 void VertexDestroy(PElem pVertex){
 
     if(pVertex == NULL){
@@ -86,6 +103,12 @@ void VertexDestroy(PElem pVertex){
 
 }
 
+/**
+ * compare between 2 vertex if they have the same serial num
+ * @param pElem1 - vertex 1 to compare
+ * @param pElem2 - vertex 2 to compare
+ * @return true if they are identical
+ */
 Bool VertexCompare(PElem pElem1, PElem pElem2){
 
     PVertex pVertex1 = pElem1;
@@ -102,6 +125,11 @@ Bool VertexCompare(PElem pElem1, PElem pElem2){
     }
 }
 
+/**
+ * create a copy of the given vertex
+ * @param pElem - vertex to clone
+ * @return the cloened vertex
+ */
 PElem VertexClone(PElem pElem){
 
     PVertex pVertex = pElem;
@@ -120,6 +148,13 @@ PElem VertexClone(PElem pElem){
 
 /*****  Edge Functions *****/
 
+/**
+ * create Edge
+ * @param weight - desired weight
+ * @param serialNumber1 - of the vertex 1 in the edge
+ * @param serialNumber2 - of the vertex 2 in the edge
+ * @return a pointer to the created edge
+ */
 PEdge EdgeCreate(int weight, int serialNumber1, int serialNumber2){
     //TODO write this func again
     if( isValidEdgeWeight(weight) == FALSE || serialNumber1 == serialNumber2 ){
@@ -150,6 +185,10 @@ PEdge EdgeCreate(int weight, int serialNumber1, int serialNumber2){
     return pEdge;
 }
 
+/**
+ * destroy given edge
+ * @param pElem pointer of edge to destroy
+ */
 void EdgeDestroy(PElem pElem){
 
     if(pElem == NULL){
@@ -165,6 +204,12 @@ void EdgeDestroy(PElem pElem){
     free(pEdge);
 }
 
+/**
+ * compare if 2 edge have the same vertices
+ * @param pElem1 - edge 1 to compare
+ * @param pElem2 - edge 2 to compare
+ * @return
+ */
 Bool EdgeCompare(PElem pElem1, PElem pElem2) {
 
     PEdge pEdge1 = pElem1;
@@ -188,6 +233,11 @@ Bool EdgeCompare(PElem pElem1, PElem pElem2) {
     return TRUE;
 }
 
+/**
+ * create a clone of a given edge
+ * @param pElem - pointer to edge to clone
+ * @return pointer to the created copy
+ */
 PElem EdgeClone(PElem pElem) {
 
     PEdge pEdge = pElem;
@@ -205,7 +255,12 @@ PElem EdgeClone(PElem pElem) {
 }
 
 /***** Graph Helper methods *****/
-
+/**
+ * decide if given set contain vertex with given serial num
+ * @param vertexList - Set to check in
+ * @param serialNumber - serial num to look for
+ * @return ture if such vertex exist
+ */
 Bool isVertexExist(PSet vertexList,int serialNumber){
     if(vertexList == NULL){
         return FALSE;
@@ -225,6 +280,13 @@ Bool isVertexExist(PSet vertexList,int serialNumber){
     }
 }
 
+/**
+ * deicde if given set contain edge with specific 2 vertices
+ * @param edgeList - set to check in
+ * @param serialNumber1 - of vertex to look for
+ * @param serialNumber2 - of vertex to look for
+ * @return true is such edge exist
+ */
 Bool isEdgeExist(PSet edgeList, int serialNumber1, int serialNumber2){
     if(edgeList == NULL){
         return FALSE;
@@ -243,6 +305,14 @@ Bool isEdgeExist(PSet edgeList, int serialNumber1, int serialNumber2){
     }
 }
 
+/**
+ * calculate edge wieght in a given graph
+ * @param pGraph - graph to check
+ * @param vertex1 - vertex 1 in the edge
+ * @param vertex2 - vertex 2 in the edge
+ * @return the weight of the edge
+ *         (-1) - if the dge dont exust or if the func fail
+ */
 int GraphGetEdgeWeight(PGraph pGraph, int vertex1, int vertex2){
     if( pGraph == NULL){
         return -1;
@@ -260,6 +330,10 @@ int GraphGetEdgeWeight(PGraph pGraph, int vertex1, int vertex2){
 
 /********* Interface impl **************/
 
+/**
+ * create an empty graph
+ * @return pointer to the graph
+ */
 PGraph GraphCreate(){
 
     PGraph pGraph = (PGraph)malloc(sizeof(Graph));
@@ -277,6 +351,10 @@ PGraph GraphCreate(){
     return pGraph;
 }
 
+/**
+ * Destroy a given graph and all of his vertices and edges
+ * @param pGraph - to destroy
+ */
 void GraphDestroy(PGraph pGraph){
     if(pGraph == NULL){
         return;
@@ -288,6 +366,12 @@ void GraphDestroy(PGraph pGraph){
     free(pGraph);
 }
 
+/**
+ * create vertex with given serial num and add it to a given graph
+ * @param pGraph - to add to
+ * @param serialNumber - desired for the new vertex
+ * @return true if success to add vertex else return false
+ */
 Bool GraphAddVertex(PGraph pGraph, int serialNumber){
 
     if(pGraph == NULL){
@@ -313,7 +397,14 @@ Bool GraphAddVertex(PGraph pGraph, int serialNumber){
     //got here if vertex added
     return TRUE;
 }
-
+/**
+ * create edge with given params and add it to a given graph
+ * @param pGraph - to add to
+ * @param vertex1 - serial of 1 vertex
+ * @param vertex2 - serial of 2 vertex
+ * @param weight - of the edge
+ * @return true if success to add edge else return false
+ */
 Bool GraphAddEdge(PGraph pGraph, int vertex1, int vertex2, int weight){
     if(pGraph == NULL){
         return FALSE;
@@ -324,7 +415,7 @@ Bool GraphAddEdge(PGraph pGraph, int vertex1, int vertex2, int weight){
 
     //validate that the vertex exist in graph
     if(isVertexExist(pGraph->vertexElements,vertex1) == FALSE ||
-            isVertexExist(pGraph->vertexElements,vertex1) == FALSE){
+            isVertexExist(pGraph->vertexElements,vertex2) == FALSE){
         return FALSE;
     }
 
@@ -350,6 +441,12 @@ Bool GraphAddEdge(PGraph pGraph, int vertex1, int vertex2, int weight){
     return TRUE;
 }
 
+/**
+ * calculate who is the neughbors of a vertex with the given serial num
+ * @param pGraph - to search in
+ * @param serialNumber - of the vertex who we search his neighbors
+ * @return pointer to a Set contains the founded neighbors vertices
+ */
 PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
 
     //validate param
@@ -368,14 +465,6 @@ PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
         return NULL;
     }
 
-    //TODO dont need it at all
-//    //init the source vertex
-//    PVertex pVertexSource = VertexCreate(serialNumber);
-//    if(pVertexSource == NULL){
-//        SetDestroy(vertexList);
-//        return NULL;
-//    }
-
     //iterate over all vertex and if they are neighbor to source add them to neighbor list
     int vertexSize = SetGetSize(pGraph->vertexElements);
     int i = 0;
@@ -386,13 +475,11 @@ PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
             PVertex pVertexTmp = VertexCreate(i);
             if(pVertexTmp == NULL){
                 SetDestroy(vertexList);
-//                VertexDestroy(pVertexSource);
                 return NULL;
             }
             //add it to the list
             if( SetAdd(vertexList,pVertexTmp) == FALSE ){
                 SetDestroy(vertexList);
-//                VertexDestroy(pVertexSource);
                 VertexDestroy(pVertexTmp);
                 return NULL;
             }
@@ -405,6 +492,14 @@ PSet GraphNeighborVertices(PGraph pGraph, int serialNumber){
     return vertexList;
 }
 
+/**
+ * implemention of Dijkstra algorithm - find to shortest path to each vertex in the graph from given soure
+ * @param pGraph - to search in
+ * @param source - serial num of vertex to start from
+ * @param dist - array of distances
+ * @param prev - prev[i] holds the vertex who led to vertex i in his shortest path
+ * @return if algo finished succesfuly
+ */
 Bool GraphFindShortestPath(PGraph pGraph, int source, int* dist, int* prev){
     if(pGraph == NULL || source < 0 || dist == NULL || prev == NULL){
         return FALSE;
@@ -508,6 +603,11 @@ Bool GraphFindShortestPath(PGraph pGraph, int source, int* dist, int* prev){
     return TRUE;
 }
 
+/**
+ * calculate the amount of edge s in the graph
+ * @param pGraph
+ * @return amount of edges in graph
+ */
 int GraphGetNumberOfEdges(PGraph pGraph){
 
     if(pGraph == NULL){
@@ -516,6 +616,11 @@ int GraphGetNumberOfEdges(PGraph pGraph){
 
     return SetGetSize(pGraph->edgeElements);
 }
+/**
+ * calculate the amount of vertices in the graph
+ * @param pGraph
+ * @return amount of vertices in the graph
+ */
 int GraphGetNumberOfVertices(PGraph pGraph){
 
     if(pGraph == NULL){
@@ -525,6 +630,10 @@ int GraphGetNumberOfVertices(PGraph pGraph){
     return SetGetSize(pGraph->vertexElements);
 }
 
+/**
+ * @param pGraph
+ * @return the vertices Set of the given graph
+ */
 PSet GraphVerticesStatus(PGraph pGraph){
 
     if(pGraph == NULL){
@@ -533,6 +642,10 @@ PSet GraphVerticesStatus(PGraph pGraph){
 
     return pGraph->vertexElements;
 }
+r/**
+ * @param pGraph
+ * @return the edges Set of the given graph
+ */
 PSet GraphEdgesStatus(PGraph pGraph){
 
     if(pGraph == NULL){
